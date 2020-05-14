@@ -10,7 +10,7 @@ class AgendaContatosApp extends StatelessWidget {
         cursorColor: Colors.brown,
         buttonColor: Colors.brown,
         indicatorColor: Colors.brown,
-        accentColor: Colors.grey[700],
+        accentColor: Colors.grey[600],
         hintColor: Colors.brown,
         primarySwatch: Colors.brown,
         primaryColor: Colors.brown,
@@ -19,12 +19,12 @@ class AgendaContatosApp extends StatelessWidget {
         textTheme: TextTheme(
           bodyText2: TextStyle(
             fontFamily: 'Amiri',
-            color: Colors.white,
-            fontSize: 24,
+            color: Colors.black,
+            fontSize: 16,
           ),
           headline6: TextStyle(
             fontFamily: 'AsapCondensed',
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 24,
           ),
         ),
