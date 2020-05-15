@@ -7,13 +7,13 @@ class AgendaContatosApp extends StatelessWidget {
     return MaterialApp(
       home: HomeViews(),
       theme: ThemeData(
-        cursorColor: Colors.brown,
-        buttonColor: Colors.brown,
-        indicatorColor: Colors.brown,
+        cursorColor: Colors.lightBlue,
+        buttonColor: Colors.lightBlue,
+        indicatorColor: Colors.lightBlue,
         accentColor: Colors.grey[600],
-        hintColor: Colors.brown,
-        primarySwatch: Colors.brown,
-        primaryColor: Colors.brown,
+        hintColor: Colors.lightBlue,
+        primarySwatch: Colors.lightBlue,
+        primaryColor: Colors.lightBlue,
         fontFamily: 'Amiri',
         canvasColor: Colors.yellow[50],
         textTheme: TextTheme(
@@ -30,7 +30,7 @@ class AgendaContatosApp extends StatelessWidget {
         ),
         appBarTheme: AppBarTheme(
           elevation: 5,
-          color: Colors.brown,
+          color: Colors.lightBlue,
           iconTheme: IconThemeData(color: Colors.white),
           textTheme: TextTheme(
             headline6: TextStyle(

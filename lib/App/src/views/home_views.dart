@@ -41,43 +41,40 @@ class HomeViews extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(15.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Card(
-                // elevation: 5,
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: CircleAvatar(
-                        radius: 25,
-                        backgroundColor: Theme.of(context).primaryColor,
-                        child: Icon(
-                          Icons.account_circle,
-                          size: 35,
-                          color: Colors.white,
-                        ),
+            child: Card(
+              elevation: 5,
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: Icon(
+                        Icons.account_circle,
+                        size: 35,
+                        color: Colors.white,
                       ),
                     ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Guilherme',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Guilherme',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
-                          Text('diretoria@pontocare.com.br'),
-                          Text('2199041803'),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                        ),
+                        Text('diretoria@pontocare.com.br'),
+                        Text('2199041803'),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
           ),
