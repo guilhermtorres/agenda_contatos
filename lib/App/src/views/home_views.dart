@@ -30,7 +30,7 @@ class _HomeViewsState extends State<HomeViews> {
   //   c.name = 'Guilherme Torres';
   //   c.email = 'diretoria@pontocare.com.br';
   //   c.phone = '21999041803';
-  //   c.img = 'imgtest';
+  //   c.img = null;
 
   //   models.saveContact(c);
   //   models.getAllContacts().then((list) {
@@ -83,7 +83,7 @@ class _HomeViewsState extends State<HomeViews> {
       ),
       bottomNavigationBar: BottomAppBar(
         elevation: 5,
-        color: Theme.of(context).primaryColor,
+        color: Colors.brown[700],
         child: Container(
           height: 50,
         ),
@@ -107,22 +107,24 @@ class _HomeViewsState extends State<HomeViews> {
         elevation: 5,
         child: Row(
           children: <Widget>[
+            SizedBox(width: 10),
             Container(
               width: 70,
               height: 70,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: contacts[index].img != null
-                      ? FileImage(
-                          File(
-                            contacts[index].img,
-                          ),
-                        )
-                      : Icon(Icons.account_circle),
-                ),
+              child: CircleAvatar(
+                child: contacts[index].img != null
+                    ? FileImage(
+                        File(
+                          contacts[index].img,
+                        ),
+                      )
+                    : Image.asset(
+                        'assets/images/icons8.png',
+                        scale: 2,
+                      ),
               ),
             ),
+            SizedBox(width: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
