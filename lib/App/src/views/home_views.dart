@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:agenda_contatos/App/src/models/contact_models.dart';
 import 'package:agenda_contatos/App/src/views/contact_views.dart';
@@ -133,16 +133,13 @@ class _HomeViewsState extends State<HomeViews> {
               width: 70,
               height: 70,
               child: CircleAvatar(
-                child: contacts[index].img != null
-                    ? FileImage(
-                        File(
-                          contacts[index].img,
-                        ),
+                backgroundImage: contacts[index].img != null
+                    ? MemoryImage(
+                        base64Decode(contacts[index].img),
+                        scale: 0.2,
                       )
-                    : Image.asset(
+                    : AssetImage(
                         'assets/images/icons8.png',
-                        scale: 2,
-                        fit: BoxFit.cover,
                       ),
               ),
             ),

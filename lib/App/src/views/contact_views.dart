@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'dart:convert';
 import 'package:agenda_contatos/App/src/models/contact_models.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -82,28 +81,21 @@ class _ContactViewsState extends State<ContactViews> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           ImagePicker.pickImage(source: ImageSource.camera).then((file) {
-                            if (file == null) return;
-                            setState(() {
-                              editedContact.img = file.path;
-                            });
+                            if (file != null) setState(() => editedContact.img = base64Encode(file.readAsBytesSync()));
                           });
                         },
                         child: Container(
                           width: 170,
                           height: 170,
                           child: CircleAvatar(
-                            child: editedContact.img != null
-                                ? FileImage(
-                                    File(
-                                      editedContact.img,
-                                    ),
+                            backgroundImage: editedContact.img != null
+                                ? MemoryImage(
+                                    base64Decode(editedContact.img),
                                   )
-                                : Image.asset(
+                                : AssetImage(
                                     'assets/images/icons8.png',
-                                    scale: 0.8,
-                                    fit: BoxFit.cover,
                                   ),
                           ),
                         ),
