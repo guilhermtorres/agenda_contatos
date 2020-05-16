@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:agenda_contatos/App/src/models/contact_models.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,12 @@ class ContactViews extends StatefulWidget {
 }
 
 class _ContactViewsState extends State<ContactViews> {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+
+  bool userEdited = false;
+
   Contact editedContact;
 
   @override
@@ -19,6 +27,10 @@ class _ContactViewsState extends State<ContactViews> {
       editedContact = Contact();
     } else {
       editedContact = Contact.fromMap(widget.contact.toMap());
+
+      nameController.text = editedContact.name;
+      emailController.text = editedContact.email;
+      phoneController.text = editedContact.phone;
     }
   }
 
@@ -31,27 +43,20 @@ class _ContactViewsState extends State<ContactViews> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              height: 40,
-              width: 40,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Image.asset(
-                  "assets/images/icon.png",
-                  color: Colors.white,
-                  height: 40,
-                  width: 40,
-                ),
-              ),
-            ),
             SizedBox(
-              width: 50,
+              width: 10,
             ),
-            Text(
-              editedContact.name ?? 'Novo Contato',
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
+            Container(
+              width: 200,
+              height: 50,
+              child: FittedBox(
+                child: Text(
+                  editedContact.name ?? 'Novo Contato',
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             )
           ],
@@ -74,10 +79,16 @@ class _ContactViewsState extends State<ContactViews> {
                         width: 170,
                         height: 170,
                         child: CircleAvatar(
-                          child: Image.asset(
-                            'assets/images/icons8.png',
-                            scale: 0.8,
-                          ),
+                          child: editedContact.img != null
+                              ? FileImage(
+                                  File(
+                                    editedContact.img,
+                                  ),
+                                )
+                              : Image.asset(
+                                  'assets/images/icons8.png',
+                                  scale: 0.8,
+                                ),
                         ),
                       ),
                     ),
@@ -93,6 +104,13 @@ class _ContactViewsState extends State<ContactViews> {
                       child: Container(
                         height: 60,
                         child: TextField(
+                          controller: nameController,
+                          onChanged: (text) {
+                            userEdited = true;
+                            setState(() {
+                              editedContact.name = text;
+                            });
+                          },
                           decoration: InputDecoration(
                             labelText: 'Nome',
                             labelStyle: TextStyle(
@@ -102,7 +120,7 @@ class _ContactViewsState extends State<ContactViews> {
                               borderRadius: BorderRadius.circular(100),
                             ),
                           ),
-                          style: TextStyle(color: Colors.brown, fontSize: 24, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.brown, fontSize: 22, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -112,6 +130,13 @@ class _ContactViewsState extends State<ContactViews> {
                       child: Container(
                         height: 60,
                         child: TextField(
+                          controller: emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          onChanged: (text) {
+                            userEdited = true;
+
+                            editedContact.email = text;
+                          },
                           decoration: InputDecoration(
                             labelText: 'Email',
                             labelStyle: TextStyle(color: Colors.brown),
@@ -119,7 +144,7 @@ class _ContactViewsState extends State<ContactViews> {
                               borderRadius: BorderRadius.circular(100),
                             ),
                           ),
-                          style: TextStyle(color: Colors.brown, fontSize: 24, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.brown, fontSize: 22, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -129,6 +154,12 @@ class _ContactViewsState extends State<ContactViews> {
                       child: Container(
                         height: 60,
                         child: TextField(
+                          controller: phoneController,
+                          onChanged: (text) {
+                            userEdited = true;
+
+                            editedContact.phone = text;
+                          },
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             labelText: 'Telefone',
@@ -137,7 +168,7 @@ class _ContactViewsState extends State<ContactViews> {
                               borderRadius: BorderRadius.circular(200),
                             ),
                           ),
-                          style: TextStyle(color: Colors.brown, fontSize: 24, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.brown, fontSize: 22, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                       ),

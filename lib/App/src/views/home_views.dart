@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:agenda_contatos/App/src/models/contact_models.dart';
+import 'package:agenda_contatos/App/src/views/contact_views.dart';
 import 'package:flutter/material.dart';
 
 class HomeViews extends StatefulWidget {
@@ -16,11 +17,8 @@ class _HomeViewsState extends State<HomeViews> {
   @override
   void initState() {
     super.initState();
-    models.getAllContacts().then((list) {
-      setState(() {
-        contacts = list;
-      });
-    });
+
+    getAllContacts();
   }
 
   // @override
@@ -90,7 +88,9 @@ class _HomeViewsState extends State<HomeViews> {
         shape: CircularNotchedRectangle(),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showContactView();
+        },
         child: Icon(
           Icons.add,
           size: 30,
@@ -163,6 +163,36 @@ class _HomeViewsState extends State<HomeViews> {
           ],
         ),
       ),
+      onTap: () {
+        showContactView(contact: contacts[index]);
+      },
     );
+  }
+
+  void showContactView({Contact contact}) async {
+    final recContact = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ContactViews(
+          contact: contact,
+        ),
+      ),
+    );
+    if (recContact != null) {
+      if (contact != null) {
+        await models.updateContact(recContact);
+      } else {
+        await models.saveContact(recContact);
+      }
+      getAllContacts();
+    }
+  }
+
+  void getAllContacts() {
+    models.getAllContacts().then((list) {
+      setState(() {
+        contacts = list;
+      });
+    });
   }
 }
