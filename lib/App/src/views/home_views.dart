@@ -1,6 +1,43 @@
+import 'dart:io';
+
+import 'package:agenda_contatos/App/src/models/contact_models.dart';
 import 'package:flutter/material.dart';
 
-class HomeViews extends StatelessWidget {
+class HomeViews extends StatefulWidget {
+  @override
+  _HomeViewsState createState() => _HomeViewsState();
+}
+
+class _HomeViewsState extends State<HomeViews> {
+  ContactModels models = ContactModels();
+
+  List<Contact> contacts = List();
+
+  @override
+  void initState() {
+    super.initState();
+    models.getAllContacts().then((list) {
+      setState(() {
+        contacts = list;
+      });
+    });
+  }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Contact c = Contact();
+  //   c.name = 'Guilherme Torres';
+  //   c.email = 'diretoria@pontocare.com.br';
+  //   c.phone = '21999041803';
+  //   c.img = 'imgtest';
+
+  //   models.saveContact(c);
+  //   models.getAllContacts().then((list) {
+  //     print(list);
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,48 +74,12 @@ class HomeViews extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Card(
-              elevation: 5,
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: Icon(
-                        Icons.account_circle,
-                        size: 35,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Guilherme',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text('diretoria@pontocare.com.br'),
-                        Text('2199041803'),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ],
+      body: ListView.builder(
+        padding: EdgeInsets.all(10),
+        itemCount: contacts.length,
+        itemBuilder: (context, index) {
+          return contactCard(context, index);
+        },
       ),
       bottomNavigationBar: BottomAppBar(
         elevation: 5,
@@ -97,6 +98,69 @@ class HomeViews extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+
+  Widget contactCard(BuildContext context, int index) {
+    return GestureDetector(
+      child: Card(
+        elevation: 5,
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: contacts[index].img != null
+                      ? FileImage(
+                          File(
+                            contacts[index].img,
+                          ),
+                        )
+                      : Icon(Icons.account_circle),
+                ),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: 26,
+                  child: Text(
+                    contacts[index].name ?? '',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 24,
+                  child: Text(
+                    contacts[index].email ?? '',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 20,
+                  child: Text(
+                    contacts[index].phone ?? '',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15)
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

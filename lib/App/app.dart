@@ -31,7 +31,7 @@ class AgendaContatosApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           elevation: 5,
           color: Colors.lightBlue,
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: Colors.grey),
           textTheme: TextTheme(
             headline6: TextStyle(
               fontFamily: 'AsapCondensed',
