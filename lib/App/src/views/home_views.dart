@@ -121,6 +121,7 @@ class _HomeViewsState extends State<HomeViews> {
                     : Image.asset(
                         'assets/images/icons8.png',
                         scale: 2,
+                        fit: BoxFit.cover,
                       ),
               ),
             ),
@@ -164,9 +165,82 @@ class _HomeViewsState extends State<HomeViews> {
         ),
       ),
       onTap: () {
-        showContactView(contact: contacts[index]);
+        showOptions(context, index);
       },
     );
+  }
+
+  void showOptions(BuildContext context, int index) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return BottomSheet(
+            onClosing: () {},
+            builder: (context) {
+              return Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: FlatButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Ligar',
+                          style: TextStyle(
+                            color: Colors.brown,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: FlatButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          showContactView(
+                            contact: contacts[index],
+                          );
+                        },
+                        child: Text(
+                          'Editar',
+                          style: TextStyle(
+                            color: Colors.brown,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: FlatButton(
+                        onPressed: () {
+                          models.deleteContact(contacts[index].id);
+                          setState(() {
+                            contacts.removeAt(index);
+                            Navigator.pop(context);
+                          });
+                        },
+                        child: Text(
+                          'Excluir',
+                          style: TextStyle(
+                            color: Colors.brown,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        });
   }
 
   void showContactView({Contact contact}) async {
