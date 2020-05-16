@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:agenda_contatos/App/src/models/contact_models.dart';
 import 'package:agenda_contatos/App/src/views/contact_views.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+enum OrderOptions { orderaz, orderza }
 
 class HomeViews extends StatefulWidget {
   @override
@@ -41,7 +44,25 @@ class _HomeViewsState extends State<HomeViews> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        actions: <Widget>[IconButton(icon: Icon(Icons.more_horiz), onPressed: () {})],
+        actions: <Widget>[
+          PopupMenuButton<OrderOptions>(
+            itemBuilder: (context) => <PopupMenuEntry<OrderOptions>>[
+              const PopupMenuItem<OrderOptions>(
+                child: Text(
+                  'Ordenar de A-Z',
+                ),
+                value: OrderOptions.orderaz,
+              ),
+              const PopupMenuItem<OrderOptions>(
+                child: Text(
+                  'Ordenar de Z-A',
+                ),
+                value: OrderOptions.orderza,
+              ),
+            ],
+            onSelected: orderList,
+          ),
+        ],
         elevation: 5,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -127,34 +148,48 @@ class _HomeViewsState extends State<HomeViews> {
             ),
             SizedBox(width: 10),
             Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  height: 26,
-                  child: Text(
+                  alignment: Alignment.topLeft,
+                  height: 35,
+                  width: 240,
+                  child: FittedBox(
+                      child: Text(
                     contacts[index].name ?? '',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
+                    textAlign: TextAlign.start,
+                  )),
                 ),
                 Container(
-                  height: 24,
-                  child: Text(
-                    contacts[index].email ?? '',
-                    style: TextStyle(
-                      fontSize: 18,
+                  alignment: Alignment.topLeft,
+                  height: 35,
+                  width: 240,
+                  child: FittedBox(
+                    child: Text(
+                      contacts[index].email ?? '',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                      textAlign: TextAlign.start,
                     ),
                   ),
                 ),
                 Container(
-                  height: 20,
-                  child: Text(
-                    contacts[index].phone ?? '',
-                    style: TextStyle(
-                      fontSize: 18,
+                  alignment: Alignment.topLeft,
+                  height: 35,
+                  width: 240,
+                  child: FittedBox(
+                    child: Text(
+                      contacts[index].phone ?? '',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                      textAlign: TextAlign.start,
                     ),
                   ),
                 ),
@@ -185,7 +220,10 @@ class _HomeViewsState extends State<HomeViews> {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: FlatButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          launch('tel:${contacts[index].phone}');
+                          Navigator.pop(context);
+                        },
                         child: Text(
                           'Ligar',
                           style: TextStyle(
@@ -268,5 +306,21 @@ class _HomeViewsState extends State<HomeViews> {
         contacts = list;
       });
     });
+  }
+
+  void orderList(OrderOptions result) {
+    switch (result) {
+      case OrderOptions.orderaz:
+        contacts.sort((a, b) {
+          return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+        });
+        break;
+      case OrderOptions.orderza:
+        contacts.sort((a, b) {
+          return b.name.toLowerCase().compareTo(a.name.toLowerCase());
+        });
+        break;
+    }
+    setState(() {});
   }
 }

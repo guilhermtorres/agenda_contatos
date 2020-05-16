@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:agenda_contatos/App/src/models/contact_models.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ContactViews extends StatefulWidget {
   final Contact contact;
@@ -12,6 +14,7 @@ class ContactViews extends StatefulWidget {
 }
 
 class _ContactViewsState extends State<ContactViews> {
+  final maskFormatter = new MaskTextInputFormatter(mask: ' (##) 9####-####', filter: {"#": RegExp(r'[0-9]')});
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
@@ -79,6 +82,14 @@ class _ContactViewsState extends State<ContactViews> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       GestureDetector(
+                        onTap: () {
+                          ImagePicker.pickImage(source: ImageSource.camera).then((file) {
+                            if (file == null) return;
+                            setState(() {
+                              editedContact.img = file.path;
+                            });
+                          });
+                        },
                         child: Container(
                           width: 170,
                           height: 170,
@@ -118,6 +129,8 @@ class _ContactViewsState extends State<ContactViews> {
                               });
                             },
                             decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
+                              suffixIcon: Icon(Icons.person),
                               labelText: 'Nome',
                               labelStyle: TextStyle(
                                 color: Colors.brown,
@@ -144,6 +157,8 @@ class _ContactViewsState extends State<ContactViews> {
                               editedContact.email = text;
                             },
                             decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
+                              suffixIcon: Icon(Icons.alternate_email),
                               labelText: 'Email',
                               labelStyle: TextStyle(color: Colors.brown),
                               border: OutlineInputBorder(
@@ -161,6 +176,7 @@ class _ContactViewsState extends State<ContactViews> {
                           height: 60,
                           child: TextField(
                             controller: phoneController,
+                            inputFormatters: [maskFormatter],
                             onChanged: (text) {
                               userEdited = true;
 
@@ -168,6 +184,8 @@ class _ContactViewsState extends State<ContactViews> {
                             },
                             keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
+                              suffixIcon: Icon(Icons.phone),
                               labelText: 'Telefone',
                               labelStyle: TextStyle(color: Colors.brown),
                               border: OutlineInputBorder(
